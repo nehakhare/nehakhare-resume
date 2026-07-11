@@ -9,19 +9,26 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-function formatWhen(iso) {
-  const then = new Date(iso);
-  const now = new Date();
-  const diffMs = now - then;
-  const min = Math.round(diffMs / 60000);
-  const abs = then.toLocaleString();
-  if (min < 1) return { rel: "just now", abs };
-  if (min < 60) return { rel: `${min} min ago`, abs };
-  const hr = Math.round(min / 60);
-  if (hr < 24) return { rel: `${hr} hour${hr === 1 ? "" : "s"} ago`, abs };
-  const day = Math.round(hr / 24);
-  if (day < 7) return { rel: `${day} day${day === 1 ? "" : "s"} ago`, abs };
-  return { rel: then.toLocaleDateString(), abs };
+const TZ = "America/Los_Angeles";
+
+function dayKey(d) {
+  return d.toLocaleDateString("en-CA", { timeZone: TZ }); // YYYY-MM-DD
+}
+function dayLabel(d) {
+  return d.toLocaleDateString("en-US", {
+    timeZone: TZ,
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+function timeLabel(d) {
+  return d.toLocaleTimeString("en-US", {
+    timeZone: TZ,
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
 export default async function Journal() {
@@ -53,6 +60,20 @@ export default async function Journal() {
   }
 
   const notes = await getNotes();
+  const todayKey = dayKey(new Date());
+
+  // Group notes (already sorted newest-first) by calendar day.
+  const order = [];
+  const groups = new Map();
+  for (const n of notes) {
+    const d = new Date(n.created_at);
+    const key = dayKey(d);
+    if (!groups.has(key)) {
+      groups.set(key, { label: dayLabel(d), items: [] });
+      order.push(key);
+    }
+    groups.get(key).items.push(n);
+  }
 
   return (
     <div className="journal">
@@ -74,31 +95,49 @@ export default async function Journal() {
       </div>
 
       <form action={createNote}>
-        <textarea name="content" placeholder="Write a note..." required />
+        <textarea name="content" placeholder="What happened today?" required />
         <div>
-          <button className="btn" type="submit">Save note</button>
+          <button className="btn" type="submit">Add entry</button>
         </div>
       </form>
 
       <div>
         {notes.length === 0 ? (
-          <p className="empty">No notes yet.</p>
+          <p className="empty">No entries yet. Start with today&apos;s note above.</p>
         ) : (
-          notes.map((n) => {
-            const t = formatWhen(n.created_at);
+          order.map((key) => {
+            const g = groups.get(key);
             return (
-              <div className="entry" key={n.id}>
-                <div className="entry-body">
-                  <div className="content">{n.content}</div>
-                  <time title={t.abs}>{t.rel}</time>
-                </div>
-                <form action={removeNote}>
-                  <input type="hidden" name="id" value={n.id} />
-                  <button className="btn-icon" type="submit" aria-label="Delete note" title="Delete note">
-                    ✕
-                  </button>
-                </form>
-              </div>
+              <section className="day-group" key={key}>
+                <h3 className="day-date">
+                  {g.label}
+                  {key === todayKey && <span className="day-today">Today</span>}
+                </h3>
+                {g.items.map((n) => {
+                  const d = new Date(n.created_at);
+                  return (
+                    <div className="entry" key={n.id}>
+                      <div className="entry-body">
+                        <div className="content">{n.content}</div>
+                        <time title={d.toLocaleString("en-US", { timeZone: TZ })}>
+                          {timeLabel(d)}
+                        </time>
+                      </div>
+                      <form action={removeNote}>
+                        <input type="hidden" name="id" value={n.id} />
+                        <button
+                          className="btn-icon"
+                          type="submit"
+                          aria-label="Delete entry"
+                          title="Delete entry"
+                        >
+                          ✕
+                        </button>
+                      </form>
+                    </div>
+                  );
+                })}
+              </section>
             );
           })
         )}

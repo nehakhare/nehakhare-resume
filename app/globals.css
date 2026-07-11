@@ -141,21 +141,32 @@ li { margin-bottom: 5px; }
   min-height: 100vh;
   padding: 1px 0;
   position: relative;
-  background: url('/journal-bg.jpg') center center / cover no-repeat fixed;
 }
-.journal-theme::before {
-  content: "";
-  position: absolute;
+.journal-bg {
+  position: fixed;
   inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.20) 100%);
+  z-index: -2;
+  background: url('/journal-bg.jpg') center center / cover no-repeat;
+  transform-origin: 50% 55%;
+  animation: kenburns 45s ease-in-out infinite alternate;
+  will-change: transform;
 }
-[data-theme="dark"] .journal-theme::before {
+.journal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.20) 100%);
+}
+[data-theme="dark"] .journal-overlay {
   background: linear-gradient(180deg, rgba(8,10,25,0.45) 0%, rgba(8,10,25,0.62) 100%);
 }
-@media (max-width: 640px) {
-  .journal-theme { background-attachment: scroll; }
+@keyframes kenburns {
+  from { transform: scale(1) translate(0, 0); }
+  to   { transform: scale(1.14) translate(-1.5%, 1%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .journal-bg { animation: none; }
 }
 .journal { max-width: 720px; margin: 64px auto 32px; background: var(--bg); padding: 36px 40px;
   box-shadow: var(--shadow); border-radius: 6px; position: relative; z-index: 1; }
@@ -213,6 +224,20 @@ li { margin-bottom: 5px; }
 .journal-theme .entry .content { font-size: 16.5px; line-height: 1.75; }
 .entry time { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
 .empty { color: var(--muted); }
+.day-group { margin-top: 20px; }
+.day-date {
+  font-size: 13px; text-transform: uppercase; letter-spacing: 1.6px;
+  color: var(--muted); font-weight: 600; margin: 26px 0 6px;
+  display: flex; align-items: center; gap: 10px;
+}
+.day-group:first-of-type .day-date { margin-top: 22px; }
+.day-date::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.journal-theme .day-date::after { background: rgba(120,120,150,0.28); }
+.day-today {
+  color: var(--accent); font-weight: 700; letter-spacing: 0.5px;
+  text-transform: none; font-size: 12px;
+  border: 1px solid var(--accent); border-radius: 20px; padding: 1px 9px;
+}
 .signin-box { text-align: center; padding: 40px 20px; }
 .signin-box p { color: var(--muted); }
 

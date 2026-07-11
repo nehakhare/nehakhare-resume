@@ -7,5 +7,11 @@ const serif = Newsreader({
 });
 
 export default function JournalLayout({ children }) {
-  return <div className={`journal-theme ${serif.className}`}>{children}</div>;
+  return (
+    <div className={`journal-theme ${serif.className}`}>
+      <div className="journal-bg" aria-hidden="true" />
+      <div className="journal-overlay" aria-hidden="true" />
+      {children}
+    </div>
+  );
 }
