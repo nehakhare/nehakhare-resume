@@ -56,6 +56,42 @@ body {
 .link { color: var(--accent); text-decoration: none; }
 .link:hover { text-decoration: underline; }
 
+/* Landing / hero */
+.landing {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
+  background:
+    radial-gradient(1000px 500px at 50% -10%, rgba(10,90,214,0.10), transparent 60%),
+    var(--page-bg);
+}
+[data-theme="dark"] .landing {
+  background:
+    radial-gradient(1000px 500px at 50% -10%, rgba(91,157,255,0.14), transparent 60%),
+    var(--page-bg);
+}
+.hero {
+  max-width: 620px; width: 100%; text-align: center;
+  background: var(--bg); border: 1px solid var(--rule); border-radius: 16px;
+  padding: 48px 44px; box-shadow: var(--shadow);
+}
+.hero-avatar {
+  width: 128px; height: 128px; border-radius: 50%; object-fit: cover;
+  border: 3px solid var(--rule); margin-bottom: 18px;
+}
+.hero-name { margin: 0; font-size: 34px; letter-spacing: 0.5px; }
+.hero-role {
+  color: var(--accent); font-weight: 600; margin: 6px 0 0;
+  text-transform: uppercase; letter-spacing: 1.5px; font-size: 14px;
+}
+.hero-tagline { color: var(--muted); font-size: 15.5px; margin: 18px auto 0; max-width: 500px; }
+.hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+.hero-cta .btn { margin-top: 0; padding: 11px 26px; font-size: 15px; }
+.hero-links { margin-top: 22px; font-size: 14px; }
+.hero-links a { color: var(--accent); text-decoration: none; }
+.hero-links a:hover { text-decoration: underline; }
+.hero-links .dot { color: var(--muted); margin: 0 10px; }
+
 .page {
   max-width: 850px;
   margin: 24px auto;
@@ -146,6 +182,10 @@ li { margin-bottom: 5px; }
   .topbar { top: 8px; right: 10px; }
   .page { padding: 28px 20px; margin: 16px 10px; }
   .journal { padding: 24px 18px; margin: 16px 10px; }
+  .hero { padding: 34px 22px; }
+  .hero-name { font-size: 28px; }
+  .hero-avatar { width: 108px; height: 108px; }
+  .hero-cta .btn { width: 100%; }
   header .headshot { width: 96px; height: 96px; }
   header h1 { font-size: 25px; }
   .job-head, .edu-head { flex-direction: column; gap: 2px; }

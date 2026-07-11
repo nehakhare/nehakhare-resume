@@ -56,6 +56,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <div className="topbar">
+          <a className="topbar-link" href="/resume">Résumé</a>
           <a className="topbar-link" href="/journal">Journal</a>
           <ThemeToggle />
         </div>
