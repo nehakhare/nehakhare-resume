@@ -146,10 +146,10 @@ li { margin-bottom: 5px; }
   position: fixed;
   inset: 0;
   z-index: -2;
-  background: url('/journal-bg.jpg') center center / cover no-repeat;
-  transform-origin: 50% 55%;
-  animation: kenburns 45s ease-in-out infinite alternate;
-  will-change: transform;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
 }
 .journal-overlay {
   position: fixed;
@@ -161,10 +161,22 @@ li { margin-bottom: 5px; }
 [data-theme="dark"] .journal-overlay {
   background: linear-gradient(180deg, rgba(8,10,25,0.45) 0%, rgba(8,10,25,0.62) 100%);
 }
-@keyframes kenburns {
-  from { transform: scale(1) translate(0, 0); }
-  to   { transform: scale(1.14) translate(-1.5%, 1%); }
+.journal-credit {
+  position: fixed;
+  right: 10px;
+  bottom: 8px;
+  z-index: 2;
+  font-size: 11px;
+  letter-spacing: 0.2px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.18);
+  transition: color 0.2s ease;
 }
+.journal-credit:hover { color: #fff; text-decoration: underline; }
 @media (prefers-reduced-motion: reduce) {
   .journal-bg { animation: none; }
 }
