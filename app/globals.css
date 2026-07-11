@@ -23,6 +23,10 @@ body {
   border-radius: 6px;
 }
 header { text-align: center; margin-bottom: 8px; }
+header .headshot {
+  width: 116px; height: 116px; border-radius: 50%; object-fit: cover;
+  margin: 0 auto 10px; display: block; border: 3px solid var(--rule);
+}
 header h1 { margin: 0; font-size: 30px; letter-spacing: 0.5px; }
 header .title {
   color: var(--accent); font-weight: 600; font-size: 16px; margin-top: 2px;

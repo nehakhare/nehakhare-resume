@@ -1,6 +1,7 @@
 export const resumeHtml = `
 <div class="page">
   <header>
+    <img class="headshot" src="/headshot.png" alt="Neha Khare" />
     <h1>Neha Khare</h1>
     <div class="title">Software Engineer II</div>
   </header>
